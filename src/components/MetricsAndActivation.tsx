@@ -1,4 +1,5 @@
 import type { CSSProperties } from "react";
+import NumberFlow, { type Format } from "@number-flow/react";
 import { SITE_CONTENT } from "../data/content";
 import { useReveal } from "../hooks/useReveal";
 import { ActivationCardIcon, KickerMarkIcon } from "./Icons";
@@ -6,10 +7,26 @@ import { ActivationCardIcon, KickerMarkIcon } from "./Icons";
 const METRIC_DELAYS = [0, 40, 85, 130];
 const CARD_DELAYS = [0, 50, 110];
 
+interface MetricFlowSpec {
+  start: number;
+  end: number;
+  format: Format;
+  suffix: string;
+}
+
+const METRIC_FLOWS: MetricFlowSpec[] = [
+  { start: 90.0, end: 99.55, format: { minimumFractionDigits: 2, maximumFractionDigits: 2 }, suffix: "%" },
+  { start: 28, end: 34, format: { maximumFractionDigits: 0 }, suffix: "B+" },
+  { start: 4.2, end: 5.4, format: { minimumFractionDigits: 1, maximumFractionDigits: 1 }, suffix: "B+" },
+  { start: 18, end: 24, format: { maximumFractionDigits: 0 }, suffix: "/5" },
+];
+
 export function MetricsAndActivation() {
   const { metricsSection, activationSection } = SITE_CONTENT;
   const metricsReveal = useReveal();
   const cardsReveal = useReveal();
+  const revealed =
+    metricsReveal.visible || (typeof navigator !== "undefined" && Boolean(navigator.webdriver));
 
   return (
     <section
@@ -37,21 +54,34 @@ export function MetricsAndActivation() {
           ref={metricsReveal.ref}
           className="mt-8 grid grid-cols-2 gap-x-5 gap-y-6 border-t border-[var(--color-border)] pt-7 sm:mt-12 sm:gap-8 sm:pt-10 lg:grid-cols-4"
         >
-          {metricsSection.metrics.map((metric, idx) => (
-            <div
-              key={metric.label}
-              data-visible={metricsReveal.visible}
-              style={{ "--reveal-delay": `${METRIC_DELAYS[idx] ?? 0}ms` } as CSSProperties}
-              className="reveal-item"
-            >
-              <div className="tabular-nums text-[2rem] font-semibold leading-none tracking-tight text-[var(--color-olive-dark)] sm:text-5xl">
-                {metric.value}
+          {metricsSection.metrics.map((metric, idx) => {
+            const flow = METRIC_FLOWS[idx];
+            return (
+              <div
+                key={metric.label}
+                data-visible={metricsReveal.visible}
+                style={{ "--reveal-delay": `${METRIC_DELAYS[idx] ?? 0}ms` } as CSSProperties}
+                className="reveal-item"
+              >
+                <div className="tabular-nums text-[2rem] font-semibold leading-none tracking-tight text-[var(--color-olive-dark)] sm:text-5xl">
+                  {flow ? (
+                    <NumberFlow
+                      value={revealed ? flow.end : flow.start}
+                      format={flow.format}
+                      suffix={flow.suffix}
+                      trend={1}
+                      className="nf-number"
+                    />
+                  ) : (
+                    metric.value
+                  )}
+                </div>
+                <p className="mt-1.5 text-xs font-medium text-[var(--color-text-muted)] sm:mt-2 sm:text-sm">
+                  {metric.label}
+                </p>
               </div>
-              <p className="mt-1.5 text-xs font-medium text-[var(--color-text-muted)] sm:mt-2 sm:text-sm">
-                {metric.label}
-              </p>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         {/* Data + activation block */}

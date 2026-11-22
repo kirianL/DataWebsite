@@ -1,4 +1,5 @@
 import { useState } from "react";
+import NumberFlow from "@number-flow/react";
 import { SITE_CONTENT } from "../data/content";
 import { ArrowUpRightIcon, KickerMarkIcon } from "./Icons";
 
@@ -13,15 +14,15 @@ const PIXEL_ROWS = [
 ];
 
 const GROWTH_TIERS = [
-  { id: "outer", stat: "4X", label: "2026 estimation", value: "$56.15B" },
-  { id: "inner", stat: "2.6X", label: "2025 milestone", value: "$21.8B" },
-  { id: "core", stat: "1.8X", label: "First 90 days", value: "$8.4B" },
+  { id: "outer", multiplier: 4, estimate: 56.15, label: "Estimación 2026" },
+  { id: "inner", multiplier: 2.6, estimate: 21.8, label: "Hito 2025" },
+  { id: "core", multiplier: 1.8, estimate: 8.4, label: "Primeros 90 días" },
 ] as const;
 
 const PILL_NOTES: Record<string, string> = {
-  Practical: "Direct playbooks built for daily shipping.",
-  Transparent: "Live attribution visible to every stakeholder.",
-  Scalable: "Architecture ready for billions of signals.",
+  Práctico: "Guías directas pensadas para avanzar cada día.",
+  Transparente: "Atribución en vivo visible para todo el equipo.",
+  Escalable: "Arquitectura lista para miles de millones de señales.",
 };
 
 const BAR_WIDTHS = ["w-[70%]", "w-[20%]", "w-[10%]"];
@@ -144,7 +145,7 @@ export function WhyChooseUsBento() {
                     {whyChooseUs.alignedStrategy.title}
                   </h3>
                   <span className="tabular-nums text-[11px] font-medium text-[var(--color-text-muted)]">
-                    {hoveredCol !== null ? `Signal ${String(hoveredCol + 1).padStart(2, "0")}` : "12/12"}
+                    {hoveredCol !== null ? `Señal ${String(hoveredCol + 1).padStart(2, "0")}` : "12/12"}
                   </span>
                 </div>
                 <p className="mt-1.5 text-xs leading-relaxed text-[var(--color-text-secondary)]">
@@ -213,11 +214,25 @@ export function WhyChooseUsBento() {
                   </p>
                 </div>
                 <div className="mt-5 sm:mt-8">
-                  <div className="tabular-nums text-4xl font-bold tracking-tight text-[var(--color-forest)] transition-opacity duration-200 sm:text-5xl">
-                    {currentGrowth.stat}
+                  <div className="tabular-nums text-5xl font-bold tracking-tight text-[var(--color-forest)]">
+                    <NumberFlow
+                      value={currentGrowth.multiplier}
+                      format={{ minimumFractionDigits: 0, maximumFractionDigits: 1 }}
+                      suffix="X"
+                      trend={(oldValue, value) => Math.sign(value - oldValue)}
+                      className="nf-number"
+                    />
                   </div>
-                  <div className="mt-1 text-xs font-medium text-[var(--color-forest)]/75 sm:text-[11px]">
-                    {currentGrowth.label} — {currentGrowth.value}
+                  <div className="mt-1.5 text-sm font-medium text-[var(--color-forest)]/80 sm:text-xs">
+                    {currentGrowth.label} —{" "}
+                    <NumberFlow
+                      value={currentGrowth.estimate}
+                      format={{ minimumFractionDigits: 0, maximumFractionDigits: 2 }}
+                      prefix="$"
+                      suffix="B"
+                      trend={(oldValue, value) => Math.sign(value - oldValue)}
+                      className="nf-number"
+                    />
                   </div>
                 </div>
               </div>
@@ -225,7 +240,7 @@ export function WhyChooseUsBento() {
               <div className="flex justify-center sm:col-span-6">
                 <svg
                   viewBox="0 0 220 220"
-                  className="h-36 w-36 text-[var(--color-forest)] sm:h-44 sm:w-44"
+                  className="h-56 w-56 text-[var(--color-forest)] sm:h-48 sm:w-48"
                   role="img"
                   aria-label="Interactive growth estimation concentric rings"
                 >
@@ -233,7 +248,7 @@ export function WhyChooseUsBento() {
                   <g
                     role="button"
                     tabIndex={0}
-                    aria-label="2026 estimation: 4X ($56.15B)"
+                    aria-label="Estimación 2026: 4X ($56.15B)"
                     className="bento-ring cursor-pointer focus:outline-none"
                     style={{
                       transform: activeTier === "outer" ? "scale(1.02)" : "scale(1)",
@@ -257,10 +272,10 @@ export function WhyChooseUsBento() {
                       stroke="currentColor"
                       strokeWidth={activeTier === "outer" ? 1.75 : 1}
                     />
-                    <text x="110" y="34" textAnchor="middle" fontSize="8" fill="currentColor" opacity="0.75">
-                      2026 estimation
+                    <text x="110" y="34" textAnchor="middle" fontSize="9.5" fill="currentColor" opacity="0.8">
+                      Estimación 2026
                     </text>
-                    <text x="110" y="48" textAnchor="middle" fontSize="11" fontWeight="700" fill="currentColor">
+                    <text x="110" y="50" textAnchor="middle" fontSize="13" fontWeight="700" fill="currentColor">
                       {whyChooseUs.provenGrowth.outerValue}
                     </text>
                   </g>
@@ -269,7 +284,7 @@ export function WhyChooseUsBento() {
                   <g
                     role="button"
                     tabIndex={0}
-                    aria-label="2025 milestone: 2.6X ($21.8B)"
+                    aria-label="Hito 2025: 2.6X ($21.8B)"
                     className="bento-ring cursor-pointer focus:outline-none"
                     style={{
                       transform: activeTier === "inner" ? "scale(1.04)" : "scale(1)",
@@ -293,10 +308,10 @@ export function WhyChooseUsBento() {
                       stroke="currentColor"
                       strokeWidth={activeTier === "inner" ? 1.75 : 1}
                     />
-                    <text x="110" y="96" textAnchor="middle" fontSize="8" fill="currentColor" opacity="0.75">
+                    <text x="110" y="96" textAnchor="middle" fontSize="9.5" fill="currentColor" opacity="0.8">
                       2025
                     </text>
-                    <text x="110" y="109" textAnchor="middle" fontSize="11" fontWeight="700" fill="currentColor">
+                    <text x="110" y="112" textAnchor="middle" fontSize="13" fontWeight="700" fill="currentColor">
                       {whyChooseUs.provenGrowth.innerValue}
                     </text>
                   </g>
@@ -305,7 +320,7 @@ export function WhyChooseUsBento() {
                   <circle
                     role="button"
                     tabIndex={0}
-                    aria-label="First 90 days: 1.8X ($8.4B)"
+                    aria-label="Primeros 90 días: 1.8X ($8.4B)"
                     cx="110"
                     cy="168"
                     r="28"

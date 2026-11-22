@@ -7,6 +7,7 @@ export function Navbar() {
   const [newsIndex, setNewsIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const toggleBtnRef = useRef<HTMLButtonElement>(null);
+  const closeBtnRef = useRef<HTMLButtonElement>(null);
   const announcements = SITE_CONTENT.topBar.announcements;
 
   useEffect(() => {
@@ -20,6 +21,9 @@ export function Navbar() {
 
   useEffect(() => {
     if (!mobileOpen) return;
+    document.body.style.overflow = "hidden";
+    closeBtnRef.current?.focus();
+
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         setMobileOpen(false);
@@ -27,8 +31,16 @@ export function Navbar() {
       }
     };
     window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
+    return () => {
+      document.body.style.overflow = "";
+      window.removeEventListener("keydown", onKeyDown);
+    };
   }, [mobileOpen]);
+
+  const closeDrawer = () => {
+    setMobileOpen(false);
+    toggleBtnRef.current?.focus();
+  };
 
   return (
     <header className="bg-[var(--color-lime)] pt-[env(safe-area-inset-top)] text-[var(--color-olive-dark)] border-b border-black/10">
@@ -38,16 +50,17 @@ export function Navbar() {
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
       >
-        <div className="mx-auto flex max-w-[var(--container-max)] flex-wrap items-center justify-between gap-2 px-4 py-1.5 text-[11px] leading-snug sm:px-6 sm:py-2 sm:text-xs lg:px-8">
-          <div className="min-h-[1.25rem] overflow-hidden" aria-live="polite">
+        <div className="mx-auto flex max-w-[var(--container-max)] items-center justify-between gap-4 px-4 py-1.5 text-[11px] sm:px-6 sm:py-2 sm:text-xs lg:px-8">
+          <div className="h-5 min-w-0 flex-1 overflow-hidden" aria-live="polite">
             <p
               key={newsIndex}
-              className="news-ticker-item font-medium text-[var(--color-olive-dark)]/85"
+              title={announcements[newsIndex]}
+              className="news-ticker-item truncate font-medium leading-5 text-[var(--color-olive-dark)]/85"
             >
               {announcements[newsIndex]}
             </p>
           </div>
-          <div className="hidden items-center gap-6 text-[var(--color-olive-dark)]/80 sm:flex">
+          <div className="hidden shrink-0 items-center gap-6 text-[var(--color-olive-dark)]/80 sm:flex">
             <span className="tabular-nums">{SITE_CONTENT.topBar.phone}</span>
             <span>{SITE_CONTENT.topBar.address}</span>
           </div>
@@ -94,7 +107,7 @@ export function Navbar() {
         <button
           ref={toggleBtnRef}
           type="button"
-          className="press-tactile inline-flex items-center justify-center rounded-lg p-2 text-[var(--color-olive-dark)] md:hidden"
+          className="press-tactile inline-flex h-11 w-11 items-center justify-center rounded-lg text-[var(--color-olive-dark)] md:hidden"
           aria-label={mobileOpen ? "Close menu" : "Open menu"}
           aria-expanded={mobileOpen}
           aria-controls="mobile-nav-drawer"
@@ -104,45 +117,76 @@ export function Navbar() {
         </button>
       </nav>
 
-      {/* Mobile menu */}
-      {mobileOpen && (
-        <div
-          id="mobile-nav-drawer"
-          role="dialog"
-          aria-modal="true"
-          aria-label="Mobile navigation"
-          className="mobile-drawer border-t border-black/10 bg-[var(--color-lime)] px-4 pb-6 pt-4 md:hidden"
-        >
-          <div className="flex flex-col gap-3">
-            {SITE_CONTENT.nav.links.map((link) => (
+      {/* Fixed overlay mobile drawer (never shifts page layout) */}
+      <div
+        id="mobile-nav-drawer"
+        role="dialog"
+        aria-modal="true"
+        aria-hidden={!mobileOpen}
+        aria-label="Mobile navigation"
+        data-open={mobileOpen}
+        className="mobile-drawer-backdrop fixed inset-0 z-50 flex justify-end bg-black/30 backdrop-blur-[2px] md:hidden"
+        onClick={(e) => {
+          if (e.target === e.currentTarget) closeDrawer();
+        }}
+      >
+        <div className="mobile-drawer-panel flex h-full w-[min(86vw,340px)] flex-col justify-between border-l border-black/10 bg-[var(--color-lime)] p-5 pt-[max(1.25rem,env(safe-area-inset-top))] pb-[max(1.5rem,env(safe-area-inset-bottom))]">
+          <div>
+            <div className="flex items-center justify-between border-b border-black/10 pb-4">
               <a
-                key={link.label}
-                href={link.href}
-                onClick={() => setMobileOpen(false)}
-                className="rounded-lg px-2 py-2 text-base font-medium text-[var(--color-olive-dark)] hover:bg-black/5"
+                href="#"
+                onClick={closeDrawer}
+                className="flex items-center gap-2 text-base font-bold tracking-tight text-[var(--color-olive-dark)]"
               >
-                {link.label}
+                <BrandMarkIcon className="h-5 w-5" />
+                <span>{SITE_CONTENT.nav.brand}</span>
               </a>
-            ))}
-            <div className="mt-2 flex items-center gap-3 border-t border-black/10 pt-4">
-              <a
-                href="#faq"
-                onClick={() => setMobileOpen(false)}
-                className="rounded-full border border-[var(--color-olive-dark)]/30 px-4 py-2 text-sm font-medium"
+              <button
+                ref={closeBtnRef}
+                type="button"
+                onClick={closeDrawer}
+                aria-label="Close menu"
+                className="press-tactile inline-flex h-11 w-11 items-center justify-center rounded-lg text-[var(--color-olive-dark)] hover:bg-black/5"
               >
-                {SITE_CONTENT.nav.signIn}
-              </a>
-              <a
-                href="#services"
-                onClick={() => setMobileOpen(false)}
-                className="rounded-full bg-[var(--color-olive-dark)] px-5 py-2 text-sm font-semibold text-white"
-              >
-                {SITE_CONTENT.nav.cta}
-              </a>
+                <CloseIcon className="h-6 w-6" />
+              </button>
+            </div>
+
+            <div className="mt-4 flex flex-col divide-y divide-black/10">
+              {SITE_CONTENT.nav.links.map((link) => (
+                <a
+                  key={link.label}
+                  href={link.href}
+                  tabIndex={mobileOpen ? 0 : -1}
+                  onClick={closeDrawer}
+                  className="flex min-h-[48px] items-center justify-between py-2 text-lg font-medium tracking-tight text-[var(--color-olive-dark)] transition-colors hover:opacity-75"
+                >
+                  <span>{link.label}</span>
+                </a>
+              ))}
             </div>
           </div>
+
+          <div className="flex flex-col gap-2.5 border-t border-black/10 pt-5">
+            <a
+              href="#services"
+              tabIndex={mobileOpen ? 0 : -1}
+              onClick={closeDrawer}
+              className="press-tactile inline-flex min-h-[46px] items-center justify-center rounded-full bg-[var(--color-olive-dark)] px-5 py-2.5 text-sm font-semibold text-white"
+            >
+              {SITE_CONTENT.nav.cta}
+            </a>
+            <a
+              href="#faq"
+              tabIndex={mobileOpen ? 0 : -1}
+              onClick={closeDrawer}
+              className="press-tactile inline-flex min-h-[46px] items-center justify-center rounded-full border border-[var(--color-olive-dark)]/35 px-5 py-2.5 text-sm font-medium text-[var(--color-olive-dark)]"
+            >
+              {SITE_CONTENT.nav.signIn}
+            </a>
+          </div>
         </div>
-      )}
+      </div>
     </header>
   );
 }

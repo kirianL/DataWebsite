@@ -120,7 +120,7 @@ export function Footer() {
           href={`mailto:${footer.email}`}
           className="transition-colors hover:text-[var(--color-lime)]"
         >
-          Email — {footer.email}
+          Correo — {footer.email}
         </a>
       </div>
     </footer>

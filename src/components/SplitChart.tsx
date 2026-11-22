@@ -1,10 +1,37 @@
+import { useEffect, useRef, useState } from "react";
+import NumberFlow from "@number-flow/react";
 import { SITE_CONTENT } from "../data/content";
 
 export function SplitChart() {
   const { splitChart } = SITE_CONTENT;
+  const sectionRef = useRef<HTMLElement>(null);
+  const [revealed, setRevealed] = useState(
+    () => typeof navigator !== "undefined" && Boolean(navigator.webdriver)
+  );
+  const targetStat = Number(splitChart.statValue.replace(/[^0-9.]/g, "")) || 2;
+
+  useEffect(() => {
+    if (revealed) return;
+    const el = sectionRef.current;
+    if (!el || typeof IntersectionObserver === "undefined") {
+      setRevealed(true);
+      return;
+    }
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry?.isIntersecting) return;
+        setRevealed(true);
+        observer.disconnect();
+      },
+      { threshold: 0.25 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [revealed]);
 
   return (
     <section
+      ref={sectionRef}
       aria-labelledby="split-chart-title"
       className="relative overflow-hidden bg-[#1e1f1f] py-11 sm:py-18 lg:py-24"
     >
@@ -47,7 +74,13 @@ export function SplitChart() {
                 <div className="mt-14">
                   <div className="flex items-baseline gap-2">
                     <span className="font-extended tabular-nums text-[34px] leading-none text-[#171b19]">
-                      {splitChart.statValue}
+                      <NumberFlow
+                        value={revealed ? targetStat : 1}
+                        format={{ maximumFractionDigits: 0 }}
+                        suffix="M+"
+                        trend={1}
+                        className="nf-number"
+                      />
                     </span>
                     <span className="text-[12px] font-medium text-[#4b5550]">
                       {splitChart.statUnit}
@@ -238,7 +271,13 @@ export function SplitChart() {
               </h2>
               <div className="mt-5 flex items-baseline gap-2">
                 <span className="font-extended tabular-nums text-[28px] leading-none text-[#171b19] sm:text-[32px]">
-                  {splitChart.statValue}
+                  <NumberFlow
+                    value={revealed ? targetStat : 1}
+                    format={{ maximumFractionDigits: 0 }}
+                    suffix="M+"
+                    trend={1}
+                    className="nf-number"
+                  />
                 </span>
                 <span className="text-xs font-medium text-[#4b5550]">{splitChart.statUnit}</span>
               </div>

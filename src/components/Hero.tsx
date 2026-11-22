@@ -1,8 +1,19 @@
+import { Fragment, useEffect, useState } from "react";
+import NumberFlow from "@number-flow/react";
 import { SITE_CONTENT } from "../data/content";
 import { ArrowRightIcon } from "./Icons";
 
 export function Hero() {
   const { hero } = SITE_CONTENT;
+  const [mounted, setMounted] = useState(
+    () => typeof navigator !== "undefined" && Boolean(navigator.webdriver)
+  );
+
+  useEffect(() => {
+    if (mounted) return;
+    const raf = window.requestAnimationFrame(() => setMounted(true));
+    return () => window.cancelAnimationFrame(raf);
+  }, [mounted]);
 
   return (
     <section aria-labelledby="hero-title" className="bg-[var(--color-lime)] text-[var(--color-olive-dark)]">
@@ -14,7 +25,14 @@ export function Hero() {
               id="hero-title"
               className="text-[2rem] font-semibold leading-[1.08] tracking-tight text-[var(--color-olive-dark)] sm:text-5xl sm:leading-[1.05] lg:text-[4rem] lg:leading-[1.04]"
             >
-              {hero.title}
+              {hero.title.split("Costa Rica").map((part, idx, arr) => (
+                <Fragment key={idx}>
+                  {part}
+                  {idx < arr.length - 1 && (
+                    <span className="cr-flag-text">Costa Rica</span>
+                  )}
+                </Fragment>
+              ))}
             </h1>
             <p className="mt-4 max-w-xl text-[15px] leading-relaxed text-[var(--color-olive-dark)]/80 sm:mt-5 sm:text-lg">
               {hero.subtitle}
@@ -86,20 +104,31 @@ export function Hero() {
               {hero.campaignCard.subtitle}
             </p>
             <div className="mt-4 space-y-3">
-              {hero.campaignCard.channels.map((ch) => (
-                <div key={ch.name}>
-                  <div className="flex items-center justify-between text-xs font-medium">
-                    <span>{ch.name}</span>
-                    <span className="tabular-nums text-[var(--color-text-primary)]">{ch.count}</span>
+              {hero.campaignCard.channels.map((ch) => {
+                const target = Number(ch.count.replace(/,/g, ""));
+                const start = Math.max(0, Math.round(target * 0.88));
+                return (
+                  <div key={ch.name}>
+                    <div className="flex items-center justify-between text-xs font-medium">
+                      <span>{ch.name}</span>
+                      <span className="tabular-nums text-[var(--color-text-primary)]">
+                        <NumberFlow
+                          value={mounted ? target : start}
+                          format={{ maximumFractionDigits: 0 }}
+                          trend={1}
+                          className="nf-number"
+                        />
+                      </span>
+                    </div>
+                    <div className="mt-1.5 h-1.5 w-full overflow-hidden rounded-full bg-black/8">
+                      <div
+                        className="h-full rounded-full bg-[var(--color-lime-strong)]"
+                        style={{ width: `${ch.percent}%` }}
+                      />
+                    </div>
                   </div>
-                  <div className="mt-1.5 h-1.5 w-full overflow-hidden rounded-full bg-black/8">
-                    <div
-                      className="h-full rounded-full bg-[var(--color-lime-strong)]"
-                      style={{ width: `${ch.percent}%` }}
-                    />
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         </div>
@@ -114,20 +143,31 @@ export function Hero() {
               {hero.campaignCard.subtitle}
             </p>
             <div className="mt-4 space-y-3">
-              {hero.campaignCard.channels.map((ch) => (
-                <div key={ch.name}>
-                  <div className="flex items-center justify-between text-xs font-medium">
-                    <span>{ch.name}</span>
-                    <span className="tabular-nums text-[var(--color-text-primary)]">{ch.count}</span>
+              {hero.campaignCard.channels.map((ch) => {
+                const target = Number(ch.count.replace(/,/g, ""));
+                const start = Math.max(0, Math.round(target * 0.88));
+                return (
+                  <div key={ch.name}>
+                    <div className="flex items-center justify-between text-xs font-medium">
+                      <span>{ch.name}</span>
+                      <span className="tabular-nums text-[var(--color-text-primary)]">
+                        <NumberFlow
+                          value={mounted ? target : start}
+                          format={{ maximumFractionDigits: 0 }}
+                          trend={1}
+                          className="nf-number"
+                        />
+                      </span>
+                    </div>
+                    <div className="mt-1.5 h-1.5 w-full overflow-hidden rounded-full bg-black/8">
+                      <div
+                        className="h-full rounded-full bg-[var(--color-lime-strong)]"
+                        style={{ width: `${ch.percent}%` }}
+                      />
+                    </div>
                   </div>
-                  <div className="mt-1.5 h-1.5 w-full overflow-hidden rounded-full bg-black/8">
-                    <div
-                      className="h-full rounded-full bg-[var(--color-lime-strong)]"
-                      style={{ width: `${ch.percent}%` }}
-                    />
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         </div>
