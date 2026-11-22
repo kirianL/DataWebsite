@@ -38,3 +38,37 @@ export function useReveal<T extends HTMLElement = HTMLDivElement>() {
 
   return { ref, visible };
 }
+
+export function useInViewOnce<T extends HTMLElement = HTMLDivElement>(threshold = 0.35) {
+  const ref = useRef<T>(null);
+  const [inView, setInView] = useState(() => {
+    if (typeof window === "undefined") return true;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return true;
+    if (typeof navigator !== "undefined" && Boolean(navigator.webdriver)) return true;
+    return false;
+  });
+
+  useEffect(() => {
+    if (inView) return;
+    const el = ref.current;
+    if (!el || typeof IntersectionObserver === "undefined") {
+      setInView(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          setInView(true);
+          observer.disconnect();
+        }
+      },
+      { threshold }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [inView, threshold]);
+
+  return { ref, inView };
+}

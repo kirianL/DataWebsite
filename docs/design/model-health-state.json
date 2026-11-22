@@ -1,10 +1,10 @@
 {
   "models": {
     "openrouter/google/gemma-4-31b-it:free": {
-      "failures": 2,
+      "failures": 4,
       "lastErrorType": "unavailable",
-      "lastFailedAt": "2026-11-22T07:21:46.123Z",
-      "cooldownUntil": 1795333006123
+      "lastFailedAt": "2026-11-22T15:49:29.004Z",
+      "cooldownUntil": 1795363469004
     },
     "opencode/nemotron-3.5-super-vl-free": {
       "failures": 1,

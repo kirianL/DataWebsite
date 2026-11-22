@@ -1,6 +1,7 @@
 import { Navbar } from "./components/Navbar";
 import { Hero } from "./components/Hero";
 import { MetricsAndActivation } from "./components/MetricsAndActivation";
+import { IsometricDataHub } from "./components/IsometricDataHub";
 import { WhyChooseUsBento } from "./components/WhyChooseUsBento";
 import { SplitChart } from "./components/SplitChart";
 import { ServicesDarkBlock } from "./components/ServicesDarkBlock";
@@ -14,6 +15,7 @@ export default function App() {
       <main>
         <Hero />
         <MetricsAndActivation />
+        <IsometricDataHub />
         <WhyChooseUsBento />
         <SplitChart />
         <ServicesDarkBlock />

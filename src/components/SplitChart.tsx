@@ -1,33 +1,11 @@
-import { useEffect, useRef, useState } from "react";
 import NumberFlow from "@number-flow/react";
 import { SITE_CONTENT } from "../data/content";
+import { useInViewOnce } from "../hooks/useReveal";
 
 export function SplitChart() {
   const { splitChart } = SITE_CONTENT;
-  const sectionRef = useRef<HTMLElement>(null);
-  const [revealed, setRevealed] = useState(
-    () => typeof navigator !== "undefined" && Boolean(navigator.webdriver)
-  );
+  const { ref: sectionRef, inView: revealed } = useInViewOnce<HTMLElement>(0.15);
   const targetStat = Number(splitChart.statValue.replace(/[^0-9.]/g, "")) || 2;
-
-  useEffect(() => {
-    if (revealed) return;
-    const el = sectionRef.current;
-    if (!el || typeof IntersectionObserver === "undefined") {
-      setRevealed(true);
-      return;
-    }
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (!entry?.isIntersecting) return;
-        setRevealed(true);
-        observer.disconnect();
-      },
-      { threshold: 0.25 }
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, [revealed]);
 
   return (
     <section

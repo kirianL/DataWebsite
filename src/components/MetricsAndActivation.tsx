@@ -1,7 +1,7 @@
 import type { CSSProperties } from "react";
 import NumberFlow, { type Format } from "@number-flow/react";
 import { SITE_CONTENT } from "../data/content";
-import { useReveal } from "../hooks/useReveal";
+import { useInViewOnce, useReveal } from "../hooks/useReveal";
 import { ActivationCardIcon, KickerMarkIcon } from "./Icons";
 
 const METRIC_DELAYS = [0, 40, 85, 130];
@@ -24,13 +24,14 @@ const METRIC_FLOWS: MetricFlowSpec[] = [
 export function MetricsAndActivation() {
   const { metricsSection, activationSection } = SITE_CONTENT;
   const metricsReveal = useReveal();
+  const metricsInView = useInViewOnce(0.35);
   const cardsReveal = useReveal();
-  const revealed =
-    metricsReveal.visible || (typeof navigator !== "undefined" && Boolean(navigator.webdriver));
+  const revealed = metricsInView.inView;
 
   return (
     <section
       id="activation"
+      ref={metricsReveal.ref}
       aria-labelledby="metrics-lead"
       className="bg-[var(--color-surface)] py-11 sm:py-18 lg:py-24"
     >
@@ -51,7 +52,7 @@ export function MetricsAndActivation() {
 
         {/* 4-column metric strip */}
         <div
-          ref={metricsReveal.ref}
+          ref={metricsInView.ref}
           className="mt-8 grid grid-cols-2 gap-x-5 gap-y-6 border-t border-[var(--color-border)] pt-7 sm:mt-12 sm:gap-8 sm:pt-10 lg:grid-cols-4"
         >
           {metricsSection.metrics.map((metric, idx) => {

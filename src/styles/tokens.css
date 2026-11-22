@@ -32,4 +32,22 @@
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
   --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+
+  /* Isometric architectural blueprint tokens (Customerup forest & electric lime palette) */
+  --iso-bg: #ffffff;
+  --iso-accent: #0f2e24;
+  --iso-accent-deep: #0b1c18;
+  --iso-lime: #d7fc6e;
+  --iso-lime-strong: #c4f83a;
+  --iso-lime-tint: #f2fcd4;
+  --iso-stroke: #2a483c;
+  --iso-stroke-soft: #6c8478;
+  --iso-pad: #e7f0e7;
+  --iso-pad-active: #dff5b4;
+  --iso-face-left: #f7faf7;
+  --iso-face-right: #e4ede4;
+  --iso-tree-shade: #d9e7da;
+  --iso-divider: #d7e2d9;
+  --iso-kpi-num: #0b1c18;
+  --iso-kpi-label: #5f7068;
 }
