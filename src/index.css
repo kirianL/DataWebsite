@@ -2,11 +2,12 @@
 @import "./styles/tokens.css";
 
 @layer base {
-  html {
+  html,
+  body {
     scroll-behavior: smooth;
     font-family: var(--font-sans);
     color: var(--color-text-primary);
-    background-color: var(--color-offwhite);
+    background-color: #d7fc6e;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
@@ -80,16 +81,32 @@
 /* Scroll-triggered staggered group reveal */
 .reveal-item {
   opacity: 0;
-  transform: translateY(14px);
+  transform: translateY(12px);
   transition:
-    opacity 420ms var(--ease-out),
-    transform 500ms var(--ease-out);
+    opacity 240ms var(--ease-out),
+    transform 280ms var(--ease-out);
   transition-delay: var(--reveal-delay, 0ms);
 }
 
 .reveal-item[data-visible="true"] {
   opacity: 1;
   transform: translateY(0);
+}
+
+/* Minimalist news ticker transition */
+.news-ticker-item {
+  animation: newsTickerIn 260ms var(--ease-out) both;
+}
+
+@keyframes newsTickerIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Tactile press feedback */
@@ -105,9 +122,19 @@
   transition: transform 140ms var(--ease-out);
 }
 
+.service-arrow-badge {
+  transition: transform 160ms var(--ease-out);
+}
+
 @media (hover: hover) and (pointer: fine) {
+  .cta-primary-hover:hover {
+    transform: scale(1.02);
+  }
   .card-interactive:hover {
     transform: translateY(-2px);
+  }
+  .card-interactive:hover .service-arrow-badge {
+    transform: scale(1.06);
   }
 }
 
@@ -117,11 +144,11 @@
 
 /* Bento interactive micro-motion (compositor-only, pointer-gated) */
 .bento-card {
-  transition: transform 200ms var(--ease-out), border-color 180ms ease;
+  transition: border-color 180ms ease;
 }
 
 .bento-portrait-img {
-  transition: transform 320ms var(--ease-out);
+  transition: transform 240ms var(--ease-out);
 }
 
 .bento-arrow-icon {
@@ -129,36 +156,32 @@
 }
 
 .bento-mark-icon {
-  transition: transform 260ms var(--ease-out);
+  transition: transform 240ms var(--ease-out);
 }
 
 .bento-pixel {
   transition:
-    transform 160ms var(--ease-out),
-    background-color 160ms ease,
-    opacity 160ms ease;
+    transform 150ms var(--ease-out),
+    background-color 150ms ease,
+    opacity 150ms ease;
 }
 
 .bento-ring {
   transform-box: fill-box;
   transform-origin: center;
   transition:
-    transform 220ms var(--ease-out),
-    opacity 180ms ease,
-    stroke-width 180ms ease;
+    transform 200ms var(--ease-out),
+    opacity 180ms var(--ease-out);
 }
 
 .bento-bar-segment {
   transform-origin: bottom center;
   transition:
-    transform 180ms var(--ease-out),
-    opacity 180ms ease;
+    transform 160ms var(--ease-out),
+    opacity 160ms var(--ease-out);
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .bento-card:hover {
-    transform: translateY(-2px);
-  }
   .bento-portrait-wrap:hover .bento-portrait-img {
     transform: scale(1.03);
   }

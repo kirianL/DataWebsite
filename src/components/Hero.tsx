@@ -1,5 +1,5 @@
 import { SITE_CONTENT } from "../data/content";
-import { ArrowRightIcon, PlayIcon } from "./Icons";
+import { ArrowRightIcon } from "./Icons";
 
 export function Hero() {
   const { hero } = SITE_CONTENT;
@@ -22,7 +22,7 @@ export function Hero() {
             <div className="mt-6 flex flex-wrap items-center gap-2.5 sm:mt-7 sm:gap-3">
               <a
                 href="#services"
-                className="inline-flex min-h-[44px] items-center gap-2 rounded-full bg-[var(--color-olive-dark)] px-5 py-2.5 text-sm font-semibold text-white transition-transform hover:scale-[1.02] active:scale-[0.98] sm:px-6 sm:py-3"
+                className="press-tactile cta-primary-hover inline-flex min-h-[44px] items-center gap-2 rounded-full bg-[var(--color-olive-dark)] px-5 py-2.5 text-sm font-semibold text-white sm:px-6 sm:py-3"
               >
                 <span>{hero.primaryCta}</span>
                 <ArrowRightIcon className="h-4 w-4" />
@@ -102,17 +102,6 @@ export function Hero() {
               ))}
             </div>
           </div>
-
-          {/* Bottom right showreel action */}
-          <a
-            href="#insights"
-            className="absolute bottom-4 right-4 inline-flex items-center gap-3 rounded-full bg-black/60 px-4 py-2 text-xs font-medium text-white backdrop-blur-sm transition-colors hover:bg-black/75 sm:bottom-5 sm:right-8"
-          >
-            <span>{hero.showreelLabel}</span>
-            <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-white text-[var(--color-olive-dark)]">
-              <PlayIcon className="h-3.5 w-3.5 translate-x-[1px]" />
-            </span>
-          </a>
         </div>
 
         {/* Mobile & tablet campaign stats card stacked cleanly below image */}

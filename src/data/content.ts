@@ -42,7 +42,11 @@ export interface FaqItem {
 
 export const SITE_CONTENT = {
   topBar: {
-    announcement: "Latest news — Real-time audience sync is now live on our platform.",
+    announcements: [
+      "Latest news — Real-time audience sync is now live on our platform.",
+      "Latest news — Native Snowflake and BigQuery connectors now ship with zero-copy routing.",
+      "Latest news — Sub-second webhook observability is available for all workspaces.",
+    ],
     phone: "(+12) 342 444 556",
     address: "80 Harrison Lane, FL 32547",
   },

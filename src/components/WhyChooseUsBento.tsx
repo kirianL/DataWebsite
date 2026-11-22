@@ -180,7 +180,7 @@ export function WhyChooseUsBento() {
                   );
                 })}
               </div>
-              <p className="mt-1.5 min-h-[1.75rem] text-center text-xs leading-snug text-[var(--color-forest)]/80 sm:text-[11px]">
+              <p className="mt-1.5 flex min-h-[2.75rem] items-center justify-center text-center text-xs leading-snug text-[var(--color-forest)]/80 sm:text-[11px]">
                 {PILL_NOTES[activePill]}
               </p>
             </div>
@@ -231,13 +231,23 @@ export function WhyChooseUsBento() {
                 >
                   {/* Outer 2026 ring */}
                   <g
-                    className="bento-ring cursor-pointer"
+                    role="button"
+                    tabIndex={0}
+                    aria-label="2026 estimation: 4X ($56.15B)"
+                    className="bento-ring cursor-pointer focus:outline-none"
                     style={{
                       transform: activeTier === "outer" ? "scale(1.02)" : "scale(1)",
                       opacity: activeTier === "outer" ? 1 : 0.65,
                     }}
                     onMouseEnter={() => setActiveTier("outer")}
+                    onFocus={() => setActiveTier("outer")}
                     onClick={() => setActiveTier("outer")}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        setActiveTier("outer");
+                      }
+                    }}
                   >
                     <circle
                       cx="110"
@@ -257,13 +267,23 @@ export function WhyChooseUsBento() {
 
                   {/* Middle 2025 ring */}
                   <g
-                    className="bento-ring cursor-pointer"
+                    role="button"
+                    tabIndex={0}
+                    aria-label="2025 milestone: 2.6X ($21.8B)"
+                    className="bento-ring cursor-pointer focus:outline-none"
                     style={{
                       transform: activeTier === "inner" ? "scale(1.04)" : "scale(1)",
                       opacity: activeTier === "inner" ? 1 : 0.72,
                     }}
                     onMouseEnter={() => setActiveTier("inner")}
+                    onFocus={() => setActiveTier("inner")}
                     onClick={() => setActiveTier("inner")}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        setActiveTier("inner");
+                      }
+                    }}
                   >
                     <circle
                       cx="110"
@@ -283,16 +303,26 @@ export function WhyChooseUsBento() {
 
                   {/* Core circle */}
                   <circle
+                    role="button"
+                    tabIndex={0}
+                    aria-label="First 90 days: 1.8X ($8.4B)"
                     cx="110"
                     cy="168"
                     r="28"
                     fill="currentColor"
-                    className="bento-ring cursor-pointer"
+                    className="bento-ring cursor-pointer focus:outline-none"
                     style={{
                       transform: activeTier === "core" ? "scale(1.08)" : "scale(1)",
                     }}
                     onMouseEnter={() => setActiveTier("core")}
+                    onFocus={() => setActiveTier("core")}
                     onClick={() => setActiveTier("core")}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        setActiveTier("core");
+                      }
+                    }}
                   />
                 </svg>
               </div>

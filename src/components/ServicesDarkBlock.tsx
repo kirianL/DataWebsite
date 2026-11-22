@@ -56,7 +56,7 @@ export function ServicesDarkBlock() {
                     }`}
                   >
                     <div className="flex justify-end">
-                      <span className="inline-flex h-8 w-8 items-center justify-center rounded-md bg-[var(--color-forest)] text-white transition-transform group-hover:scale-105">
+                      <span className="service-arrow-badge inline-flex h-8 w-8 items-center justify-center rounded-md bg-[var(--color-forest)] text-white">
                         <ArrowUpRightIcon className="h-4 w-4" />
                       </span>
                     </div>

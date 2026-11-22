@@ -4,7 +4,19 @@ import { BrandMarkIcon, CloseIcon, MenuIcon } from "./Icons";
 
 export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [newsIndex, setNewsIndex] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
   const toggleBtnRef = useRef<HTMLButtonElement>(null);
+  const announcements = SITE_CONTENT.topBar.announcements;
+
+  useEffect(() => {
+    if (announcements.length <= 1 || isPaused) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const id = window.setInterval(() => {
+      setNewsIndex((prev) => (prev + 1) % announcements.length);
+    }, 4500);
+    return () => window.clearInterval(id);
+  }, [announcements.length, isPaused]);
 
   useEffect(() => {
     if (!mobileOpen) return;
@@ -19,13 +31,22 @@ export function Navbar() {
   }, [mobileOpen]);
 
   return (
-    <header className="bg-[var(--color-lime)] text-[var(--color-olive-dark)] border-b border-black/10">
+    <header className="bg-[var(--color-lime)] pt-[env(safe-area-inset-top)] text-[var(--color-olive-dark)] border-b border-black/10">
       {/* Top announcement strip */}
-      <div className="border-b border-black/10">
+      <div
+        className="border-b border-black/10"
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
+      >
         <div className="mx-auto flex max-w-[var(--container-max)] flex-wrap items-center justify-between gap-2 px-4 py-1.5 text-[11px] leading-snug sm:px-6 sm:py-2 sm:text-xs lg:px-8">
-          <p className="font-medium text-[var(--color-olive-dark)]/85">
-            {SITE_CONTENT.topBar.announcement}
-          </p>
+          <div className="min-h-[1.25rem] overflow-hidden" aria-live="polite">
+            <p
+              key={newsIndex}
+              className="news-ticker-item font-medium text-[var(--color-olive-dark)]/85"
+            >
+              {announcements[newsIndex]}
+            </p>
+          </div>
           <div className="hidden items-center gap-6 text-[var(--color-olive-dark)]/80 sm:flex">
             <span className="tabular-nums">{SITE_CONTENT.topBar.phone}</span>
             <span>{SITE_CONTENT.topBar.address}</span>
@@ -64,7 +85,7 @@ export function Navbar() {
           </a>
           <a
             href="#services"
-            className="rounded-full bg-[var(--color-olive-dark)] px-5 py-2.5 text-sm font-semibold text-white transition-transform hover:scale-[1.02] active:scale-[0.98]"
+            className="press-tactile cta-primary-hover rounded-full bg-[var(--color-olive-dark)] px-5 py-2.5 text-sm font-semibold text-white"
           >
             {SITE_CONTENT.nav.cta}
           </a>

@@ -226,10 +226,10 @@ export function SplitChart() {
             </g>
           </svg>
 
-          {/* MOBILE & TABLET DEDICATED COMPACT LAYOUT (readable, zero empty voids, real curve + cutout skyline) */}
+          {/* MOBILE & TABLET DEDICATED COMPACT LAYOUT (clean horizontal split, unified dark chart canvas) */}
           <div className="lg:hidden">
-            {/* Compact daytime top panel */}
-            <div className="bg-white p-5 text-[#161a18] sm:p-7">
+            {/* Clean white top header */}
+            <div className="bg-white p-5 sm:p-7 text-[#161a18]">
               <span className="inline-flex items-center rounded-full bg-[#77f57a] px-3 py-1 text-[11px] font-medium text-[#142619]">
                 {splitChart.kicker}
               </span>
@@ -245,48 +245,57 @@ export function SplitChart() {
               <p className="mt-1 text-xs text-[#4b5550]">{splitChart.statLabel}</p>
             </div>
 
-            {/* Compact split curve strip (light left / dark right) */}
-            <div className="relative bg-gradient-to-r from-white from-50% to-[#1c1d1d] to-50% px-2 py-2">
-              <svg
-                aria-hidden="true"
-                viewBox="0 0 360 132"
-                className="block h-auto w-full"
-              >
-                <defs>
-                  <linearGradient id="mobile-curve-split" x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="50%" stopColor="#3a6d59" />
-                    <stop offset="50.01%" stopColor="#74f37a" />
-                  </linearGradient>
-                </defs>
-                <path
-                  d="M 16,84 C 46,96 68,108 94,108 C 122,108 142,88 180,84 C 204,80 218,52 240,40 C 260,30 272,26 286,26 C 308,26 326,48 344,68"
-                  fill="none"
-                  stroke="url(#mobile-curve-split)"
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
-                />
-                <circle cx="94" cy="108" r="8" fill="#3a6d59" />
-                <circle cx="94" cy="108" r="2.2" fill="#ffffff" />
-                <circle cx="286" cy="26" r="8" fill="#74f37a" />
-                <path
-                  d="M287.5 23.5 A3.2 3.2 0 1 0 288.8 27.9 A2.6 2.6 0 0 1 287.5 23.5 Z"
-                  fill="none"
-                  stroke="#142619"
-                  strokeWidth="1.2"
-                />
-                <g fontFamily="Inter, sans-serif" fontSize="8.5" fontWeight="500">
-                  <text x="16" y="102" fill="#6b7280">8AM</text>
-                  <text x="84" y="126" fill="#6b7280">12PM</text>
-                  <text x="150" y="102" fill="#6b7280">3PM</text>
-                  <text x="218" y="66" fill="#9ca3af">6PM</text>
-                  <text x="278" y="47" fill="#9ca3af">9PM</text>
-                  <text x="326" y="84" fill="#9ca3af">12AM</text>
-                </g>
-              </svg>
-            </div>
+            {/* Unified dark chart + callouts + statement + skyline */}
+            <div className="relative overflow-hidden bg-[#1c1d1d] px-5 pb-24 pt-5 text-white sm:px-7 sm:pb-32 sm:pt-7">
+              {/* Subtle vertical grid lines */}
+              <div aria-hidden="true" className="pointer-events-none absolute inset-0 grid grid-cols-4">
+                <div className="border-r border-white/[0.045]" />
+                <div className="border-r border-white/[0.045]" />
+                <div className="border-r border-white/[0.045]" />
+                <div />
+              </div>
 
-            {/* Compact dark bottom panel with callouts + statement + skyline */}
-            <div className="relative overflow-hidden bg-[#1c1d1d] p-5 pb-24 text-white sm:p-7 sm:pb-32">
+              {/* Clean full-width dark chart curve */}
+              <div className="relative z-20 mb-5 rounded-xl border border-white/10 bg-[#151716]/80 px-2 py-3">
+                <svg
+                  aria-hidden="true"
+                  viewBox="0 0 360 124"
+                  className="block h-auto w-full"
+                >
+                  <defs>
+                    <linearGradient id="mobile-curve-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+                      <stop offset="0%" stopColor="#438168" />
+                      <stop offset="50%" stopColor="#5cc976" />
+                      <stop offset="100%" stopColor="#74f37a" />
+                    </linearGradient>
+                  </defs>
+                  <path
+                    d="M 16,78 C 46,90 68,100 94,100 C 122,100 142,80 180,76 C 204,72 218,46 240,34 C 260,24 272,20 286,20 C 308,20 326,42 344,62"
+                    fill="none"
+                    stroke="url(#mobile-curve-grad)"
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                  />
+                  <circle cx="94" cy="100" r="8" fill="#3a6d59" />
+                  <circle cx="94" cy="100" r="2.2" fill="#ffffff" />
+                  <circle cx="286" cy="20" r="8" fill="#74f37a" />
+                  <path
+                    d="M287.5 17.5 A3.2 3.2 0 1 0 288.8 21.9 A2.6 2.6 0 0 1 287.5 17.5 Z"
+                    fill="none"
+                    stroke="#142619"
+                    strokeWidth="1.2"
+                  />
+                  <g fontFamily="Inter, sans-serif" fontSize="8.5" fontWeight="500" fill="#9ca3af">
+                    <text x="14" y="96">8AM</text>
+                    <text x="84" y="119">12PM</text>
+                    <text x="150" y="94">3PM</text>
+                    <text x="218" y="60">6PM</text>
+                    <text x="278" y="42">9PM</text>
+                    <text x="326" y="78">12AM</text>
+                  </g>
+                </svg>
+              </div>
+
               <div className="relative z-20 grid grid-cols-1 gap-2.5 sm:grid-cols-2 sm:gap-3">
                 <div className="rounded-xl bg-[#3a6d59] p-3.5 text-xs text-white">
                   <div className="font-semibold">{splitChart.dipTitle}</div>
