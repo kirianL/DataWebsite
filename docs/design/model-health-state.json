@@ -1,0 +1,36 @@
+{
+  "models": {
+    "openrouter/google/gemma-4-31b-it:free": {
+      "failures": 2,
+      "lastErrorType": "unavailable",
+      "lastFailedAt": "2026-11-22T07:21:46.123Z",
+      "cooldownUntil": 1795333006123
+    },
+    "opencode/nemotron-3.5-super-vl-free": {
+      "failures": 1,
+      "lastErrorType": "quota_exhausted",
+      "lastFailedAt": "2026-11-22T07:23:42.919Z",
+      "cooldownUntil": 1795334022919
+    },
+    "openrouter/google/gemma-4-26b-a4b-it:free": {
+      "failures": 1,
+      "lastErrorType": "unavailable",
+      "lastFailedAt": "2026-11-22T07:25:35.658Z",
+      "cooldownUntil": 1795333235658
+    },
+    "opencode/deepseek-v4.1-flash-free": {
+      "failures": 1,
+      "lastErrorType": "quota_exhausted",
+      "lastFailedAt": "2026-11-22T07:38:54.981Z",
+      "cooldownUntil": 1795334934981
+    }
+  },
+  "providers": {
+    "opencode": {
+      "failures": 2,
+      "lastErrorType": "quota_exhausted",
+      "lastFailedAt": "2026-11-22T07:38:54.981Z",
+      "cooldownUntil": 1795333734981
+    }
+  }
+}

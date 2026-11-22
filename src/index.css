@@ -1,0 +1,195 @@
+@import "tailwindcss";
+@import "./styles/tokens.css";
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    font-family: var(--font-sans);
+    color: var(--color-text-primary);
+    background-color: var(--color-offwhite);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.025em;
+  }
+
+  a:focus-visible,
+  button:focus-visible {
+    outline: 2px solid var(--color-forest);
+    outline-offset: 2px;
+  }
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+.font-extended {
+  font-family: "Michroma", "Plus Jakarta Sans", sans-serif;
+}
+
+.editorial-grid-bg {
+  background-image:
+    linear-gradient(to right, rgba(17, 24, 21, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(17, 24, 21, 0.05) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+/* Mobile drawer entrance */
+.mobile-drawer {
+  transform-origin: top right;
+  opacity: 1;
+  transform: translateX(0);
+  transition:
+    opacity 260ms var(--ease-drawer),
+    transform 300ms var(--ease-drawer);
+}
+
+@starting-style {
+  .mobile-drawer {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+}
+
+/* Smooth FAQ accordion (grid-row interpolation) */
+.faq-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition:
+    grid-template-rows 250ms var(--ease-out),
+    opacity 200ms var(--ease-out);
+}
+
+.faq-panel[data-open="true"] {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+
+.faq-panel-inner {
+  overflow: hidden;
+}
+
+/* Scroll-triggered staggered group reveal */
+.reveal-item {
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity 420ms var(--ease-out),
+    transform 500ms var(--ease-out);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+.reveal-item[data-visible="true"] {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Tactile press feedback */
+.press-tactile {
+  transition: transform 120ms var(--ease-out);
+}
+
+.press-tactile:active {
+  transform: scale(0.96);
+}
+
+.card-interactive {
+  transition: transform 140ms var(--ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .card-interactive:hover {
+    transform: translateY(-2px);
+  }
+}
+
+.card-interactive:active {
+  transform: translateY(-2px) scale(0.98);
+}
+
+/* Bento interactive micro-motion (compositor-only, pointer-gated) */
+.bento-card {
+  transition: transform 200ms var(--ease-out), border-color 180ms ease;
+}
+
+.bento-portrait-img {
+  transition: transform 320ms var(--ease-out);
+}
+
+.bento-arrow-icon {
+  transition: transform 160ms var(--ease-out);
+}
+
+.bento-mark-icon {
+  transition: transform 260ms var(--ease-out);
+}
+
+.bento-pixel {
+  transition:
+    transform 160ms var(--ease-out),
+    background-color 160ms ease,
+    opacity 160ms ease;
+}
+
+.bento-ring {
+  transform-box: fill-box;
+  transform-origin: center;
+  transition:
+    transform 220ms var(--ease-out),
+    opacity 180ms ease,
+    stroke-width 180ms ease;
+}
+
+.bento-bar-segment {
+  transform-origin: bottom center;
+  transition:
+    transform 180ms var(--ease-out),
+    opacity 180ms ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .bento-card:hover {
+    transform: translateY(-2px);
+  }
+  .bento-portrait-wrap:hover .bento-portrait-img {
+    transform: scale(1.03);
+  }
+  .bento-cta-group:hover .bento-arrow-icon {
+    transform: translate(2px, -2px);
+  }
+  .bento-dark-card:hover .bento-mark-icon {
+    transform: rotate(90deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .reveal-item {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .press-tactile:active {
+    transform: scale(0.98);
+  }
+  .card-interactive:active {
+    transform: scale(0.99);
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

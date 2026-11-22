@@ -1,0 +1,35 @@
+:root {
+  /* Core palette (observed & harmonized from references) */
+  --color-lime: #d7fc6e;
+  --color-lime-strong: #c4f83a;
+  --color-lime-muted: #c2e85b;
+  --color-forest: #0b1c18;
+  --color-forest-soft: #122822;
+  --color-olive-dark: #1d2508;
+  --color-offwhite: #f5f6f3;
+  --color-surface: #ffffff;
+  --color-border: #e2e5df;
+  --color-border-dark: rgba(255, 255, 255, 0.14);
+
+  /* Typography */
+  --font-display: "Plus Jakarta Sans", "Inter", system-ui, -apple-system, sans-serif;
+  --font-sans: "Inter", "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+
+  /* Text colors */
+  --color-text-primary: #111815;
+  --color-text-secondary: #4a5550;
+  --color-text-muted: #67726d;
+  --color-text-on-dark: #f7f9f4;
+  --color-text-on-dark-muted: #a6b4ae;
+
+  /* Radii & Spacing */
+  --radius-card: 16px;
+  --radius-button: 9999px;
+  --radius-badge: 8px;
+  --container-max: 1200px;
+
+  /* Motion tokens */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+}
